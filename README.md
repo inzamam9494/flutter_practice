@@ -1,16 +1,5 @@
 # flutter_practice
 
-A new Flutter project.
+## Container Practice
+<img src = "https://github.com/inzamam9494/flutter_practice/assets/81466387/fafec8d8-a67b-4659-b606-cbd338846b7e" height = "600" width = "300">
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
