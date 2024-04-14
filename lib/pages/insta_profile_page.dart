@@ -22,12 +22,13 @@ class _InstaProfilePageState extends State<InstaProfilePage> {
         elevation: 2,
       ),
       body: Container(
-        padding: const EdgeInsets.all(16),
         width: MediaQuery.of(context).size.width,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Profile Pics
             Container(
+              padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
                   const CircleAvatar(
@@ -72,11 +73,59 @@ class _InstaProfilePageState extends State<InstaProfilePage> {
               ),
             ),
             // Profile Bio
-            Container(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Grow Fuzion",style: TextStyle(
+                    fontWeight: FontWeight.w800
+                  ),),
+                  Text("My GitHub Portfolio",
+                  style: TextStyle(
+                    color: Colors.grey.shade500
+                  ),),
+                  Text("https://github.com/inzamam9494",
+                  style: TextStyle(
+                    color: Colors.blue
+                  ),),
+                  Text("I am Flutter Developer working on India"),
+                ],
+              ),
+            ),
             // Highlights
-            Container(),
+            Container(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                  itemBuilder: (context, index){
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child:  CircleAvatar(
+                      backgroundColor: index%2 == 0 ? Colors.red : Colors.black,
+                      maxRadius: 40,
+                    ),
+                  );
+                  }),
+            ),
             // Profile Grid
-            Container()
+            Expanded(
+              child: Container(
+                child: GridView.builder(
+                  itemCount: 100,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2
+                    ),
+                    itemBuilder: (index, context){
+                    return Container(
+                      color: Colors.black,
+                    );
+                    }),
+              ),
+            )
           ],
         ),
       ),
