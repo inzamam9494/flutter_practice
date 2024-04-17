@@ -1,46 +1,118 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  User? currUser = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        title: const Text("Simple TODO List"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              icon: const Icon(Icons.login_outlined))
+        ],
       ),
-      body: Center(
-        child: Container(
-          height: 200,
-          width: 200,
-          decoration: BoxDecoration(
-            // border: Border.all(color: Colors.black, width: 5),
-            color: Colors.red,
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(4, 4), color: Colors.black.withOpacity(0.5)),
-            ],
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Center(
-            child: Container(
-              height: 100,
-              width: 100,
-              color: Colors.yellow,
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  height: 50,
-                  width: 50,
-                  color: Colors.green,
-                  child: Container(
-                    // margin: EdgeInsets.all(5),
-                    color: Colors.white,
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(16),
+              height: 200,
+              color: Colors.grey.shade200,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: titleController,
+                    decoration:
+                        const InputDecoration(hintText: 'Enter TODO Title'),
+                    validator: (val) {
+                      if (val.toString().isEmpty) {
+                        return 'Please Enter the Title';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaved: (val) {
+                      titleController.text = val.toString();
+                    },
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: descriptionController,
+                    decoration: const InputDecoration(
+                        hintText: 'Enter TODO Description'),
+                    validator: (val) {
+                      if (val.toString().isEmpty) {
+                        return 'Please Enter The Description';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaved: (val) {
+                      descriptionController.text = val.toString();
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (currUser != null) {
+                          await FirebaseFirestore.instance
+                              .collection('user')
+                              .doc(currUser!.uid)
+                              .collection('todos')
+                              .add({
+                            'title': titleController.text,
+                            'description': descriptionController.text
+                          });
+                        }
+                      },
+                      child: const Text("Saved"),
+                    ),
+                  )
+                ],
               ),
             ),
-          ),
+            Expanded(
+                child: Container(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(currUser!.uid)
+                    .collection('todos')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    final docs = snapshot.data!.docs;
+                    return ListView.builder(
+                        itemCount: docs.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(docs[index]['title']),
+                            subtitle: Text(docs[index]['description']),
+                          );
+                        });
+                  }
+                },
+              ),
+            ))
+          ],
         ),
       ),
     );

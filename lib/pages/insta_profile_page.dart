@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/pages/insta_home_page.dart';
 import 'package:flutter_practice/widgets/insta_profile_display_number.dart';
 
 class InstaProfilePage extends StatefulWidget {
@@ -20,6 +22,11 @@ class _InstaProfilePageState extends State<InstaProfilePage> {
         centerTitle: true,
         shadowColor: Colors.black,
         elevation: 2,
+        actions: [
+          IconButton(onPressed: (){
+            FirebaseAuth.instance.signOut();
+          }, icon: const Icon(Icons.login_outlined))
+        ],
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -58,7 +65,9 @@ class _InstaProfilePageState extends State<InstaProfilePage> {
                          height: 30,
                          width: double.maxFinite,
                          child: ElevatedButton(
-                           onPressed: (){},
+                           onPressed: (){
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => InstaHomePage()));
+                           },
                            style: ButtonStyle(
                              backgroundColor: MaterialStateProperty.all(Colors.blueAccent)
                            ),
