@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/pages/update_TODO_list.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -103,9 +104,29 @@ class HomePage extends StatelessWidget {
                     return ListView.builder(
                         itemCount: docs.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(docs[index]['title']),
-                            subtitle: Text(docs[index]['description']),
+                          return Dismissible(
+                            key: ValueKey(docs[index].id),
+                            background: Container(color: Colors.red, child: Icon(Icons.delete, color: Colors.white),),
+                            onDismissed: (direction) async{
+                              await FirebaseFirestore.instance
+                              .collection('user')
+                                  .doc(currUser!.uid)
+                                  .collection('todos')
+                                  .doc(docs[index].id)
+                                  .delete();
+                              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(docs[index].id)));
+                            },
+                            child: ListTile(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateTODOList(
+                                  title: docs[index]['title'],
+                                  description: docs[index]['description'],
+                                  toDoId: docs[index].id,
+                                )));
+                              },
+                              title: Text(docs[index]['title']),
+                              subtitle: Text(docs[index]['description']),
+                            ),
                           );
                         });
                   }

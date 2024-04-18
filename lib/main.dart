@@ -5,6 +5,7 @@ import 'package:flutter_practice/pages/authentication_form.dart';
 import 'package:flutter_practice/pages/home_page.dart';
 import 'package:flutter_practice/pages/insta_home_page.dart';
 import 'package:flutter_practice/pages/insta_profile_page.dart';
+import 'package:flutter_practice/pages/posts.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot){
              if(snapshot.hasData){
-               return HomePage();
+               return Posts();
              }else{
                return AuthenticationForm();
              }
