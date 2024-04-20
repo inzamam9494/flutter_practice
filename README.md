@@ -14,8 +14,7 @@ https://github.com/inzamam9494/flutter_practice/assets/81466387/d26aaddd-a447-47
 
 ##  API(GET,POST,PATCH,DELETE) Practice
 https://github.com/inzamam9494/flutter_practice/assets/81466387/399f4ec4-c8ef-450b-8fdd-9ed93d8e910c
-
-
-
-
-
+#### API Website
+```HTTP
+  https://jsonplaceholder.typicode.com/
+```
